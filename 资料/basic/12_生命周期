@@ -1,0 +1,52 @@
+# 一、概念
+
+挂载： mount
+
+卸载：unmount
+
+```javascript
+			death = ()=>{
+				//卸载组件
+				ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+			}
+```
+
+二、旧生命周期
+
+​    *1. 初始化阶段: 由ReactDOM.render()触发---初次渲染*
+
+​         *1.  constructor()*
+
+​         *2.  componentWillMount()*
+
+​         *3.  render()*
+
+​         *4.  componentDidMount() =====> 常用*
+
+​             *一般在这个钩子中做一些初始化的事，例如：开启定时器、发送网络请求、订阅消息*
+
+​    *2. 更新阶段: 由组件内部 this.setSate()或父组件 render触发*
+
+​         *1.  shouldComponentUpdate()*
+
+​         *2.  componentWillUpdate()*
+
+​         *3.  render() =====> 必须使用的一个*
+
+​         *4.  componentDidUpdate()*
+
+​    *3. 卸载组件: 由 ReactDOM.unmountComponentAtNode()触发*
+
+​         *1.  componentWillUnmount()  =====> 常用*
+
+​             *一般在这个钩子中做一些收尾的事，例如：关闭定时器、取消订阅消息*
+
+
+
+![1702950884316](C:\Users\13000\AppData\Roaming\Typora\typora-user-images\1702950884316.png)
+
+三、生命周期（新）
+
+ 
+
+![1702951441595](C:\Users\13000\AppData\Roaming\Typora\typora-user-images\1702951441595.png)

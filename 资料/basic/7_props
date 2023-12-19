@@ -1,0 +1,191 @@
+## 一、props基本使用
+
+```javascript
+		//创建组件
+		class Person extends React.Component{
+			render(){
+				// console.log(this);
+				const {name,age,sex} = this.props
+				return (
+					<ul>
+						<li>姓名：{name}</li>
+						<li>性别：{sex}</li>
+						<li>年龄：{age+1}</li>
+					</ul>
+				)
+			}
+		}
+		//渲染组件到页面
+		ReactDOM.render(<Person name="jerry" age={19} sex="男"/>,document.getElementById('test1'))
+		ReactDOM.render(<Person name="tom" age={18} sex="女"/>,document.getElementById('test2'))
+```
+
+简写：
+
+```javascript
+		const p = {name:'老刘',age:18,sex:'女'}
+		// console.log('@',...p);
+		// ReactDOM.render(<Person name={p.name} age={p.age} sex={p.sex}/>,document.getElementById('test3'))
+		ReactDOM.render(<Person {...p}/>,document.getElementById('test3'))
+```
+
+## 二、...展开运算符
+
+1、数组reduce：
+
+```javascript
+			//在函数中使用
+			function sum(...numbers){
+				return numbers.reduce((preValue,currentValue)=>{
+					return preValue + currentValue
+				})
+			}
+			console.log(sum(1,2,3,4));
+```
+
+2、复制一个对象
+
+三点运算符不能展开对象。
+
+参考：MDN展开语法。
+
+```javascript
+			//构造字面量对象时使用展开语法
+			let person = {name:'tom',age:18}
+			let person2 = {...person}
+			//console.log(...person); //报错，展开运算符不能展开对象
+			person.name = 'jerry'
+			console.log(person2);
+			console.log(person);
+```
+
+3、babel + react 能展开对象，但不能随意使用，仅适用于标签属性传递。
+
+原生三点运算符不能展开对象。
+
+4、...合并
+
+```javascript
+		//合并
+		let person3 = {...person,name:'jack',address:"地球"}
+		console.log(person3);
+```
+## 三、props限制
+
+依赖包
+
+```html
+	<!-- 引入prop-types，用于对组件标签属性进行限制 -->
+	<script type="text/javascript" src="../js/prop-types.js"></script>
+```
+
+
+
+```javascript
+		//对标签属性进行类型、必要性的限制
+		Person.propTypes = {
+			name:PropTypes.string.isRequired, //限制name必传，且为字符串
+			sex:PropTypes.string,//限制sex为字符串
+			age:PropTypes.number,//限制age为数值
+			speak:PropTypes.func,//限制speak为函数
+		}
+		//指定默认标签属性值
+		Person.defaultProps = {
+			sex:'男',//sex默认值为男
+			age:18 //age默认值为18
+		}
+```
+
+props是只读的
+
+
+
+## 四、简写
+
+```javascript
+		//创建组件
+		class Person extends React.Component{
+
+			constructor(props){
+				//构造器是否接收props，是否传递给super，取决于：是否希望在构造器中通过this访问props
+				// console.log(props);
+				super(props)
+				console.log('constructor',this.props);
+			}
+
+			//对标签属性进行类型、必要性的限制
+			static propTypes = {
+				name:PropTypes.string.isRequired, //限制name必传，且为字符串
+				sex:PropTypes.string,//限制sex为字符串
+				age:PropTypes.number,//限制age为数值
+			}
+
+			//指定默认标签属性值
+			static defaultProps = {
+				sex:'男',//sex默认值为男
+				age:18 //age默认值为18
+			}
+			
+			render(){
+				// console.log(this);
+				const {name,age,sex} = this.props
+				//props是只读的
+				//this.props.name = 'jack' //此行代码会报错，因为props是只读的
+				return (
+					<ul>
+						<li>姓名：{name}</li>
+						<li>性别：{sex}</li>
+						<li>年龄：{age+1}</li>
+					</ul>
+				)
+			}
+		}
+
+		//渲染组件到页面
+		ReactDOM.render(<Person name="jerry"/>,document.getElementById('test1'))
+```
+
+
+
+## 五、构造器 constructor
+
+能省略就省略
+
+```javascript
+			constructor(props){
+				//构造器是否接收props，是否传递给super，取决于：是否希望在构造器中通过this访问props
+				// console.log(props);
+				super(props)
+				console.log('constructor',this.props);
+			}
+```
+
+## 六、函数能用props
+
+```javascript
+		//创建组件
+		function Person (props){
+			const {name,age,sex} = props
+			return (
+					<ul>
+						<li>姓名：{name}</li>
+						<li>性别：{sex}</li>
+						<li>年龄：{age}</li>
+					</ul>
+				)
+		}
+		Person.propTypes = {
+			name:PropTypes.string.isRequired, //限制name必传，且为字符串
+			sex:PropTypes.string,//限制sex为字符串
+			age:PropTypes.number,//限制age为数值
+		}
+
+		//指定默认标签属性值
+		Person.defaultProps = {
+			sex:'男',//sex默认值为男
+			age:18 //age默认值为18
+		}
+		//渲染组件到页面
+		ReactDOM.render(<Person name="jerry"/>,document.getElementById('test1'))
+```
+
